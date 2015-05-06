@@ -6,6 +6,7 @@ class QuestionsDatabase < SQLite3::Database
 
   def initialize
     super('questions.db')
+    self.results_as_hash = true
   end
 
 end
