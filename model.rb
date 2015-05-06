@@ -44,6 +44,12 @@ class Model
     end
   end
 
+  def initialize(attrs = {})
+    unless attrs['id'].nil?
+      raise "can't set id" unless match_database?(attrs)
+    end
+  end
+
   def save
     ivar_hash = instance_variable_hash
     id = ivar_hash.delete('id')
@@ -92,5 +98,24 @@ class Model
   def column_setters(ivar_hash)
     setters = ivar_hash.keys.map { |ivar_name| "#{ivar_name} = ?"}
     setters.join(",\n")
+  end
+
+  def match_database?(attrs)
+    model_attrs = QuestionsDatabase.instance.execute(<<-SQL, attrs['id'])
+      SELECT
+        *
+      FROM
+        replies
+      WHERE
+        id = ?
+    SQL
+    model_attrs = model_attrs[0]
+    attr_names = model_attrs.keys
+    attr_values = []
+
+    attr_names.each do |attr_name|
+      attr_values << model_attrs[attr_name]
+    end
+    attrs.values.to_set == attr_values.to_set && attrs.keys.to_set == attr_names.to_set
   end
 end

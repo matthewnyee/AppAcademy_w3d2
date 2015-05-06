@@ -5,8 +5,6 @@ require_relative 'question_follow'
 require_relative 'model'
 
 class User < Model
-  TABLE = 'users'
-
   def self.find_by_name(fname, lname)
     find_by_fname_and_lname(fname, lname)
   end
@@ -14,6 +12,7 @@ class User < Model
   attr_accessor :fname, :lname, :id
 
   def initialize(attrs = {})
+    super
     @fname = attrs['fname']
     @lname = attrs['lname']
     @id = attrs['id']

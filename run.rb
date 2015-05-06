@@ -5,4 +5,4 @@ require_relative 'user'
 require_relative 'question_like'
 require_relative 'model'
 
-p Reply.find_by_id(1)[0].child_replies
+p Reply.find_by_id(1)

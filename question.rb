@@ -5,8 +5,6 @@ require_relative 'question_follow'
 require_relative 'model'
 
 class Question < Model
-  TABLE = 'questions'
-
   def self.find_by_author_id(author_id)
     question_attrs = QuestionsDatabase.instance.execute(<<-SQL, author_id)
       SELECT
@@ -30,6 +28,7 @@ class Question < Model
   attr_reader :id, :author_id, :title, :body
 
   def initialize(attrs = {})
+    super
     @id, @author_id = attrs['id'], attrs['author_id']
     @title, @body = attrs['title'], attrs['body']
   end
